@@ -1,6 +1,7 @@
 package com.sarracent.springboot.error.app.controllers;
 
 import com.sarracent.springboot.error.app.controllers.models.domain.Usuario;
+import com.sarracent.springboot.error.app.errors.UsuarioNoEncontradoException;
 import com.sarracent.springboot.error.app.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,10 @@ public class AppController {
     @GetMapping("/ver/{id}")
     public String ver(@PathVariable Integer id, Model model) {
         Usuario usuario = usuarioService.obtenerPorId(id);
+
+        if (usuario==null) {
+            throw new UsuarioNoEncontradoException(id.toString());
+        }
         model.addAttribute("usuario",usuario);
         model.addAttribute("Titulo", "Detalle usuario: " .concat(usuario.getNombre()));
         return "ver";
