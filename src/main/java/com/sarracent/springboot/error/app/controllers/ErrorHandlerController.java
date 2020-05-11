@@ -10,11 +10,20 @@ import java.util.Date;
 @ControllerAdvice
 public class ErrorHandlerController {
     @ExceptionHandler(ArithmeticException.class)
-    public String aritmeticaError(Exception e, Model model) {
+    public String aritmeticaError(ArithmeticException e, Model model) {
         model.addAttribute("error", "Error de aritmetica");
         model.addAttribute("message", e.getMessage());
         model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         model.addAttribute("timestamp", new Date());
-        return "error/aritmetica";
+        return "error/generica";
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public String numeroFormatoError(Exception e, Model model) {
+        model.addAttribute("error", "Error: Formato número inválido!");
+        model.addAttribute("message", e.getMessage());
+        model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        model.addAttribute("timestamp", new Date());
+        return "error/generica";
     }
 }
